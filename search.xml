@@ -98,30 +98,30 @@
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>记录一下自己的windows环境搭建和美化的过程，后续可能还会继续添加内容</p>
 <h1 id="Windows下工具"><a href="#Windows下工具" class="headerlink" title="Windows下工具"></a>Windows下工具</h1><p>开发工具：</p>
 <ul>
-<li><a class="link" href="https://code.visualstudio.com/">VSCode <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><a class="link" href="https://www.jetbrains.com/idea/">IDEA <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><a class="link" href="https://nodejs.org/en">Nodejs <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><a class="link" href="https://git-scm.com/">Git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><a class="link" href="https://hexo.io/zh-cn/">Hexo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://code.visualstudio.com/">VSCode<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" href="https://www.jetbrains.com/idea/">IDEA<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" href="https://nodejs.org/en">Nodejs<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" href="https://git-scm.com/">Git<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" href="https://hexo.io/zh-cn/">Hexo<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
 <li>VMWare<ul>
-<li><a class="link" href="https://www.kali.org/">Kali Linux <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://www.kali.org/">Kali Linux<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
 <li>Windows 10</li>
 </ul>
 </li>
 </ul>
 <p>常用工具：</p>
 <ul>
-<li><a class="link" href="https://www.google.com/chrome/">Chrome <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><a class="link" href="https://www.microsoft.com/zh-cn/edge?form=MA13FJ">Edge <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://www.google.com/chrome/">Chrome<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" href="https://www.microsoft.com/zh-cn/edge?form=MA13FJ">Edge<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
 <li>Clash</li>
-<li><a class="link" href="https://obsidian.md/">Obsidian <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><a class="link" href="https://www.bandisoft.com/bandizip/">Bandzip <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://obsidian.md/">Obsidian<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" href="https://www.bandisoft.com/bandizip/">Bandzip<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
 </ul>
 <p>安全工具：</p>
 <ul>
 <li>CobaltStrike</li>
 <li>ida</li>
-<li><a class="link" href="https://www.wireshark.org/">Wireshark <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://www.wireshark.org/">Wireshark<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
 <li>BurpSuite</li>
 </ul>
 <p>VSCode插件:</p>
@@ -131,6 +131,7 @@
 <li>Remote SSH</li>
 <li>background-cover</li>
 <li>GitHub Copilot</li>
+<li>clangd</li>
 </ul>
 <p>Edge插件:</p>
 <ul>
@@ -139,23 +140,31 @@
 <li>Proxy SwitchyOmega</li>
 </ul>
 <h1 id="Beautify"><a href="#Beautify" class="headerlink" title="Beautify"></a>Beautify</h1><p>装工具也就图一乐，真开心还得看美化的过程，每次看着自己的电脑漂亮起来都是一种享受</p>
-<h2 id="Oh-My-Posh"><a href="#Oh-My-Posh" class="headerlink" title="Oh-My-Posh"></a>Oh-My-Posh</h2><p>首先贴一个<a class="link" href="https://ohmyposh.dev/">官网 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>在这</p>
+<h2 id="Oh-My-Posh"><a href="#Oh-My-Posh" class="headerlink" title="Oh-My-Posh"></a>Oh-My-Posh</h2><p>首先贴一个<a class="link" href="https://ohmyposh.dev/">官网<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>在这</p>
 <p>Oh-My-Posh听名字就和Oh-My-Zsh一样，是个用于美化终端的工具，只不过我们今天的主角是用于美化Powershell的</p>
 <p>自从Windows 11以来，Windows Terminal就集成到了windows系统中，比起以前那个黑框框和蓝框框已经好看了不少，但是相较之下还是有点单调，这时就需要我们的Oh-My-Posh来进行美化了</p>
 <p>我个人的Oh-My-Posh美化过程分为三步，安装设置Oh-My-Posh，更换随机主题，更换字体和背景</p>
 <p>首先安装Oh-My-Posh，有两种方法，一种是直接上Microsoft Store上去下载，鼠标点点就行，第二种是powershell命令行下载，命令如下（PS: 更新命令与之相同）</p>
-<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Set-ExecutionPolicy</span> Bypass <span class="literal">-Scope</span> <span class="keyword">Process</span> <span class="literal">-Force</span>; <span class="built_in">Invoke-Expression</span> ((<span class="built_in">New-Object</span> System.Net.WebClient).DownloadString(<span class="string">'https://ohmyposh.dev/install.ps1'</span>))</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Set-ExecutionPolicy</span> Bypass <span class="literal">-Scope</span> <span class="keyword">Process</span> <span class="literal">-Force</span>; <span class="built_in">Invoke-Expression</span> ((<span class="built_in">New-Object</span> System.Net.WebClient).DownloadString(<span class="string">'https://ohmyposh.dev/install.ps1'</span>))</span><br></pre></td></tr></table></figure></div>
 
 <p>第二步需要让我们的terminal打开时自动启动Oh-My-Posh，并设置一个随机的主题。首先查看我们的powershell设置，在powershell中输入<code>$profile</code>回车就能找到设置的路径，在这个ps1文件里添加如下内容完成设置</p>
-<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$theme</span> = <span class="built_in">Get-ChildItem</span> <span class="variable">$env:UserProfile</span>\\AppData\\Local\\Programs\\oh<span class="literal">-my-posh</span>\\themes\\ | <span class="built_in">Get-Random</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"hello! today's lucky theme is: <span class="variable">$theme</span> :)"</span></span><br><span class="line"><span class="built_in">oh</span><span class="literal">-my-posh</span> <span class="literal">--init</span> <span class="literal">--shell</span> pwsh <span class="literal">--config</span> <span class="variable">$theme</span>.FullName | <span class="built_in">Invoke-Expression</span></span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$theme</span> = <span class="built_in">Get-ChildItem</span> <span class="variable">$env:UserProfile</span>\\AppData\\Local\\Programs\\oh<span class="literal">-my-posh</span>\\themes\\ | <span class="built_in">Get-Random</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"hello! today's lucky theme is: <span class="variable">$theme</span> :)"</span></span><br><span class="line"><span class="built_in">oh</span><span class="literal">-my-posh</span> <span class="literal">--init</span> <span class="literal">--shell</span> pwsh <span class="literal">--config</span> <span class="variable">$theme</span>.FullName | <span class="built_in">Invoke-Expression</span></span><br></pre></td></tr></table></figure></div>
 
-<p>第三步换字体和背景，<a class="link" href="https://www.nerdfonts.com/">字体下载处 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，个人推荐JetBrains的<a class="link" href="https://www.programmingfonts.org/#jetbrainsmono">JetBrainsMono Nerd Font <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，因为很多其他字体会加载不出来图案</p>
+<p>第三步换字体和背景，<a class="link" href="https://www.nerdfonts.com/">字体下载处<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，个人推荐JetBrains的<a class="link" href="https://www.programmingfonts.org/#jetbrainsmono">JetBrainsMono Nerd Font<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，因为很多其他字体会加载不出来图案</p>
 <p>下载完字体后打开windows的<code>设置</code> <code>个性化</code> <code>字体</code>把下载的字体导入，接下来就是让windows terminal识别这个字体（顺便把背景也设置了），首先打开windows terminal的配置文件（开个windows terminal摁下<code>Ctrl+Shift+,</code>），找到如下配置进行对应设置即可</p>
-<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">"profiles"</span><span class="punctuation">:</span> </span><br><span class="line">    <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"defaults"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">            <span class="attr">"useAcrylic"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> </span><br><span class="line">            <span class="attr">"acrylicOpacity"</span><span class="punctuation">:</span> <span class="number">0.2</span><span class="punctuation">,</span> <span class="comment">// 不透明度</span></span><br><span class="line">            <span class="attr">"backgroundImage"</span><span class="punctuation">:</span> <span class="string">"Path\\image.png"</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">"backgroundImageOpacity"</span><span class="punctuation">:</span> <span class="number">0.4</span><span class="punctuation">,</span> <span class="comment">// 背景图片的不透明度</span></span><br><span class="line">            <span class="attr">"font"</span><span class="punctuation">:</span> </span><br><span class="line">            <span class="punctuation">{</span></span><br><span class="line">                <span class="attr">"face"</span><span class="punctuation">:</span> <span class="string">"JetBrainsMono Nerd Font"</span></span><br><span class="line">            <span class="punctuation">}</span></span><br><span class="line">        <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">}</span></span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">"profiles"</span><span class="punctuation">:</span> </span><br><span class="line">    <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"defaults"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">            <span class="attr">"useAcrylic"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> </span><br><span class="line">            <span class="attr">"acrylicOpacity"</span><span class="punctuation">:</span> <span class="number">0.2</span><span class="punctuation">,</span> <span class="comment">// 不透明度</span></span><br><span class="line">            <span class="attr">"backgroundImage"</span><span class="punctuation">:</span> <span class="string">"Path\\image.png"</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">"backgroundImageOpacity"</span><span class="punctuation">:</span> <span class="number">0.4</span><span class="punctuation">,</span> <span class="comment">// 背景图片的不透明度</span></span><br><span class="line">            <span class="attr">"font"</span><span class="punctuation">:</span> </span><br><span class="line">            <span class="punctuation">{</span></span><br><span class="line">                <span class="attr">"face"</span><span class="punctuation">:</span> <span class="string">"JetBrainsMono Nerd Font"</span></span><br><span class="line">            <span class="punctuation">}</span></span><br><span class="line">        <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">}</span></span><br></pre></td></tr></table></figure></div>
 
 <p>贴个效果图在这</p>
 <p><img lazyload="" src="/images/loading.svg" data-src="/images/WindowsEnv/WindowsEnvBuild/Terminal.png" alt="Terminal"></p>
-]]></content>
+<h1 id="VSCode插件设置"><a href="#VSCode插件设置" class="headerlink" title="VSCode插件设置"></a>VSCode插件设置</h1><h2 id="clangd的代码跳转"><a href="#clangd的代码跳转" class="headerlink" title="clangd的代码跳转"></a>clangd的代码跳转</h2><p>在使用C/C++的时候遇到了代码跳转以及补全功能不对劲的问题，因此后续采用clangd的代码跳转和补全功能，由于C/C++与clangd存在冲突，因此需要禁用C/C++的所有相关插件</p>
+<blockquote>
+<p>C/C++有时会遇到跳转很慢的问题，只需要将<code>C_Cpp.intelliSenseEngine</code>设置为<code>Tag Parser</code>即可</p>
+</blockquote>
+<p>clangd的代码补全比较好用，而跳转需要生成对应的compile_commands.json文件，可以通过compiledb在编译时自动生成该配置文件</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">pip install compiledb</span><br></pre></td></tr></table></figure></div>
+
+<p>使用compiledb生成compile_commands.json有多种方式，主要介绍以下几种</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">make时生成</span></span><br><span class="line">compiledb make xxx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">单独生成compile_commands.json而不编译</span></span><br><span class="line">compiledb -n make xxx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Cmake方式，在CMakeLists.txt中添加</span></span><br><span class="line">set(CMAKE_EXPORT_COMPILECOMMANDS ON)</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">针对Linux内核代码，使用Linux内核自带脚本生成</span></span><br><span class="line">./scripts/clang-tools/gen_compile_commands.py</span><br></pre></td></tr></table></figure></div>]]></content>
       <categories>
         <category>EnvBuild</category>
       </categories>
