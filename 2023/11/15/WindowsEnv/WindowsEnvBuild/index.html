@@ -30,7 +30,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/WindowsEnv/WindowsEnvBuild/Terminal.png">
 <meta property="article:published_time" content="2023-11-15T10:50:41.000Z">
-<meta property="article:modified_time" content="2024-12-08T06:48:31.148Z">
+<meta property="article:modified_time" content="2024-12-12T09:15:21.833Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="WindowsEnv">
 <meta property="article:tag" content="EnvBeautify">
@@ -571,8 +571,8 @@ mjx-container[display="true"] + br {
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-12-08 14:48:31</span>
-            <span class="mobile">2024-12-08 14:48:31</span>
+            <span class="desktop">2024-12-12 17:15:21</span>
+            <span class="mobile">2024-12-12 17:15:21</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -614,12 +614,12 @@ mjx-container[display="true"] + br {
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>842 Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1k Words</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>3 Mins</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>4 Mins</span>
         </span>
     
     
@@ -669,12 +669,13 @@ mjx-container[display="true"] + br {
 </ul>
 <p>VSCode插件:</p>
 <ul>
-<li>C/C++ Themes</li>
+<li>// C/C++ Themes // 由于与clangd冲突以后不需要了</li>
 <li>One Dark Pro</li>
 <li>Remote SSH</li>
 <li>background-cover</li>
 <li>GitHub Copilot</li>
 <li>clangd</li>
+<li>clang-format</li>
 </ul>
 <p>Edge插件:</p>
 <ul>
@@ -708,6 +709,18 @@ mjx-container[display="true"] + br {
 
 <p>使用compiledb生成compile_commands.json有多种方式，主要介绍以下几种</p>
 <div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">make时生成</span></span><br><span class="line">compiledb make xxx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">单独生成compile_commands.json而不编译</span></span><br><span class="line">compiledb -n make xxx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Cmake方式，在CMakeLists.txt中添加</span></span><br><span class="line">set(CMAKE_EXPORT_COMPILECOMMANDS ON)</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">针对Linux内核代码，使用Linux内核自带脚本生成</span></span><br><span class="line">./scripts/clang-tools/gen_compile_commands.py</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="clang-format自动格式化代码风格"><a href="#clang-format自动格式化代码风格" class="headerlink" title="clang-format自动格式化代码风格"></a>clang-format自动格式化代码风格</h2><p>clang-format加上vscode自带的编辑可以自动给代码调整缩进等，需要进行简单的配置，首先安装clang-format，然后配置settings.json</p>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">    <span class="comment">// clang-format 扩展的配置</span></span><br><span class="line">    <span class="attr">"clang-format.style"</span> <span class="punctuation">:</span> <span class="string">"file"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"clang-format.assumeFilename"</span><span class="punctuation">:</span> <span class="string">"/home/user/.clang-format"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"clang-format.executable"</span><span class="punctuation">:</span> <span class="string">"/usr/bin/clang-format"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"clang-format.fallbackStyle"</span><span class="punctuation">:</span> <span class="string">"Google"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"editor.defaultFormatter"</span><span class="punctuation">:</span> <span class="string">"xaver.clang-format"</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></table></figure></div>
+
+<p>然后生成一个.clang-format进行定义</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang-format --style=Google --dump-config &gt; ./.clang-format</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>注意在windows下需要将.clang-format保存为utf-8格式，有时会自动保存为utf-16 LE</p>
+</blockquote>
+<p>最后打开vscode的自动格式化，同样在<code>settings.json</code>，这样可以在保存时自动格式化，也可以手动<code>shift+alt+f</code>格式化</p>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"editor.formatOnType"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"editor.formatOnSave"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></table></figure></div>
 		</div>
 
 		
@@ -721,7 +734,7 @@ mjx-container[display="true"] + br {
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-12-08 14:48:31
+                    :</strong> 2024-12-12 17:15:21
             </li>
         
         <li>
@@ -843,7 +856,7 @@ mjx-container[display="true"] + br {
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
 		<div class="page-title">Windows下环境搭建记录</div>
-		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows%E4%B8%8B%E5%B7%A5%E5%85%B7"><span class="nav-text">Windows下工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Beautify"><span class="nav-text">Beautify</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Oh-My-Posh"><span class="nav-text">Oh-My-Posh</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VSCode%E6%8F%92%E4%BB%B6%E8%AE%BE%E7%BD%AE"><span class="nav-text">VSCode插件设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#clangd%E7%9A%84%E4%BB%A3%E7%A0%81%E8%B7%B3%E8%BD%AC"><span class="nav-text">clangd的代码跳转</span></a></li></ol></li></ol>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows%E4%B8%8B%E5%B7%A5%E5%85%B7"><span class="nav-text">Windows下工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Beautify"><span class="nav-text">Beautify</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Oh-My-Posh"><span class="nav-text">Oh-My-Posh</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VSCode%E6%8F%92%E4%BB%B6%E8%AE%BE%E7%BD%AE"><span class="nav-text">VSCode插件设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#clangd%E7%9A%84%E4%BB%A3%E7%A0%81%E8%B7%B3%E8%BD%AC"><span class="nav-text">clangd的代码跳转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clang-format%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC"><span class="nav-text">clang-format自动格式化代码风格</span></a></li></ol></li></ol>
 
 	</div>
 </div>
@@ -874,7 +887,7 @@ mjx-container[display="true"] + br {
                     </span>
                     
                         <span>
-                            4.6k words in total
+                            4.8k words in total
                         </span>
                     
                 </p>

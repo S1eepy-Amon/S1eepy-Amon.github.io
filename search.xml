@@ -126,12 +126,13 @@
 </ul>
 <p>VSCode插件:</p>
 <ul>
-<li>C/C++ Themes</li>
+<li>// C/C++ Themes // 由于与clangd冲突以后不需要了</li>
 <li>One Dark Pro</li>
 <li>Remote SSH</li>
 <li>background-cover</li>
 <li>GitHub Copilot</li>
 <li>clangd</li>
+<li>clang-format</li>
 </ul>
 <p>Edge插件:</p>
 <ul>
@@ -164,7 +165,19 @@
 <div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">pip install compiledb</span><br></pre></td></tr></table></figure></div>
 
 <p>使用compiledb生成compile_commands.json有多种方式，主要介绍以下几种</p>
-<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">make时生成</span></span><br><span class="line">compiledb make xxx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">单独生成compile_commands.json而不编译</span></span><br><span class="line">compiledb -n make xxx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Cmake方式，在CMakeLists.txt中添加</span></span><br><span class="line">set(CMAKE_EXPORT_COMPILECOMMANDS ON)</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">针对Linux内核代码，使用Linux内核自带脚本生成</span></span><br><span class="line">./scripts/clang-tools/gen_compile_commands.py</span><br></pre></td></tr></table></figure></div>]]></content>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">make时生成</span></span><br><span class="line">compiledb make xxx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">单独生成compile_commands.json而不编译</span></span><br><span class="line">compiledb -n make xxx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Cmake方式，在CMakeLists.txt中添加</span></span><br><span class="line">set(CMAKE_EXPORT_COMPILECOMMANDS ON)</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">针对Linux内核代码，使用Linux内核自带脚本生成</span></span><br><span class="line">./scripts/clang-tools/gen_compile_commands.py</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="clang-format自动格式化代码风格"><a href="#clang-format自动格式化代码风格" class="headerlink" title="clang-format自动格式化代码风格"></a>clang-format自动格式化代码风格</h2><p>clang-format加上vscode自带的编辑可以自动给代码调整缩进等，需要进行简单的配置，首先安装clang-format，然后配置settings.json</p>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">    <span class="comment">// clang-format 扩展的配置</span></span><br><span class="line">    <span class="attr">"clang-format.style"</span> <span class="punctuation">:</span> <span class="string">"file"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"clang-format.assumeFilename"</span><span class="punctuation">:</span> <span class="string">"/home/user/.clang-format"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"clang-format.executable"</span><span class="punctuation">:</span> <span class="string">"/usr/bin/clang-format"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"clang-format.fallbackStyle"</span><span class="punctuation">:</span> <span class="string">"Google"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"editor.defaultFormatter"</span><span class="punctuation">:</span> <span class="string">"xaver.clang-format"</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></table></figure></div>
+
+<p>然后生成一个.clang-format进行定义</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="code"><pre><span class="line">clang-format --style=Google --dump-config &gt; ./.clang-format</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>注意在windows下需要将.clang-format保存为utf-8格式，有时会自动保存为utf-16 LE</p>
+</blockquote>
+<p>最后打开vscode的自动格式化，同样在<code>settings.json</code>，这样可以在保存时自动格式化，也可以手动<code>shift+alt+f</code>格式化</p>
+<div class="code-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"editor.formatOnType"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"editor.formatOnSave"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></table></figure></div>]]></content>
       <categories>
         <category>EnvBuild</category>
       </categories>
